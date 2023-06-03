@@ -88,13 +88,6 @@ export default function CheckoutForm() {
         id="link-authentication-element"
         onChange={(e) => setEmail(e.target.value)}
       />
-      {/* Add the access_key input field */}
-      <LinkAuthenticationElement
-        id="access-key-element"
-        label="Access Key"
-        type="text"
-        onChange={(e) => setAccessKey(e.target.value)}
-      />
       <PaymentElement id="payment-element" options={paymentElementOptions} />
       <button disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
