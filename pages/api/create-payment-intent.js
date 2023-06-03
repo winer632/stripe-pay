@@ -18,6 +18,10 @@ export default async function handler(req, res) {
     automatic_payment_methods: {
       enabled: true,
     },
+    metadata:{
+      "business_model_id": "2",
+      "client_reference_id": "12345"
+    },
   });
 
   res.send({
