@@ -43,6 +43,10 @@ const webhookHandler = async (req, res) => {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object;
         console.log(`PaymentIntent status: ${paymentIntent.status}`);
+        amount = paymentIntent.amount
+        business_model_id = paymentIntent.metadata.business_model_id
+        console.log(`amount: ${amount}`);
+        console.log(`business_model_id: ${business_model_id}`);
         break;
       }
       case 'payment_intent.payment_failed': {
@@ -54,7 +58,19 @@ const webhookHandler = async (req, res) => {
       }
       case 'charge.succeeded': {
         const charge = event.data.object;
-        console.log(`Charge id: ${charge.id}`);
+        console.log(`charge.succeeded， Charge id: ${charge.id}`);
+        break;
+      }
+      case 'checkout.session.completed':{
+        console("🔔  Payment received!");
+        break;
+      }
+      case 'checkout.session.async_payment_succeeded':{
+        console("🔔  Async Payment received!");
+        break;
+      }
+      case 'checkout.session.async_payment_failed':{
+        console("🔔  Async Payment failed!");
         break;
       }
       default: {
