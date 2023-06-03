@@ -1,0 +1,2 @@
+# stripe-pay
+nextjs
