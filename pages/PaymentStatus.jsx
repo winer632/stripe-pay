@@ -4,7 +4,7 @@ import Link from 'next/link'; // Import Link component from Next.js
 
 const PaymentStatus = () => {
   const stripe = useStripe();
-  const [message, setMessage] = useState(null);
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     if (!stripe) {
@@ -34,24 +34,26 @@ const PaymentStatus = () => {
         // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
         switch (paymentIntent.status) {
           case 'succeeded':
-            setMessage('Success! Payment received.');
-            setMessage('付款成功！');
-            setMessage('Please save this access_key carefully and use it to access My ChatGPT Web, it will not be displayed again : ' + paymentIntentId);
-            setMessage('请妥善保存这个访问密码，并用它来访问My ChatGPT Web，它不会再次显示 ：' + paymentIntentId);
+            setMessages([
+              'Success! Payment received.',
+              '付款成功！',
+              'Please save this access_key carefully and use it to access My ChatGPT Web, it will not be displayed again : ' + paymentIntentId,
+              '请妥善保存这个访问密码，并用它来访问My ChatGPT Web，它不会再次显示 ：' + paymentIntentId
+            ]);
             break;
 
           case 'processing':
-            setMessage("Payment processing. We'll update you when payment is received.");
+            setMessages(["Payment processing. We'll update you when payment is received."]);
             break;
 
           case 'requires_payment_method':
             // Redirect your user back to your payment page to attempt collecting
             // payment again
-            setMessage('Payment failed. Please try another payment method.');
+            setMessages(['Payment failed. Please try another payment method.']);
             break;
 
           default:
-            setMessage('Something went wrong.');
+            setMessages(['Something went wrong.']);
             break;
         }
       });
@@ -60,7 +62,9 @@ const PaymentStatus = () => {
   // Add a return to home button using Link component
   return (
     <div>
-      <p>{message}</p>
+      {messages.map((message, index) => (
+        <p key={index}>{message}</p>
+      ))}
       <Link href="https://chat.bizoe.tech/#/settings">
         <a>设置访问密码</a>
       </Link>
