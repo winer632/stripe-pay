@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
-import {useStripe} from '@stripe/react-stripe-js';
+import React from 'react';
+import {loadStripe} from '@stripe/stripe-js';
+import {Elements} from '@stripe/react-stripe-js';
 import Link from 'next/link'; // Import Link component from Next.js
 
 const PaymentStatus = () => {
@@ -72,4 +73,15 @@ const PaymentStatus = () => {
   );
 };
 
-export default PaymentStatus;
+// Load your publishable key from an environment variable or a config file
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY);
+
+const App = () => {
+  return (
+    <Elements stripe={stripePromise}>
+      <PaymentStatus />
+    </Elements>
+  );
+};
+
+export default App;
