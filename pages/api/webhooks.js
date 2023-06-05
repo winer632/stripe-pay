@@ -42,7 +42,10 @@ const webhookHandler = async (req, res) => {
     switch (event.type) {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object;
+        const paymentIntentId = event.data.object.id;
+        console.log(`PaymentIntent id: ${paymentIntentId}`)
         console.log(`PaymentIntent status: ${paymentIntent.status}`);
+        // Retrieve the PaymentIntent ID from the event data
         amount = paymentIntent.amount
         business_model_id = paymentIntent.metadata.business_model_id
         console.log(`amount: ${amount}`);
@@ -62,15 +65,15 @@ const webhookHandler = async (req, res) => {
         break;
       }
       case 'checkout.session.completed':{
-        console("🔔  Payment received!");
+        console.log("🔔  Payment received!");
         break;
       }
       case 'checkout.session.async_payment_succeeded':{
-        console("🔔  Async Payment received!");
+        console.log("🔔  Async Payment received!");
         break;
       }
       case 'checkout.session.async_payment_failed':{
-        console("🔔  Async Payment failed!");
+        console.log("🔔  Async Payment failed!");
         break;
       }
       default: {
