@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useStripe} from '@stripe/react-stripe-js';
+import Link from 'next/link'; // Import Link component from Next.js
 
 const PaymentStatus = () => {
   const stripe = useStripe();
@@ -36,7 +37,7 @@ const PaymentStatus = () => {
             setMessage('Success! Payment received.');
             setMessage('付款成功！');
             setMessage('Please save this access_key carefully and use it to access My ChatGPT Web, it will not be displayed again : ' + paymentIntentId);
-            setMessage('请妥善保存这个access_key，并用它来访问My ChatGPT Web，它不会再次显示 ：' + paymentIntentId);
+            setMessage('请妥善保存这个访问密码，并用它来访问My ChatGPT Web，它不会再次显示 ：' + paymentIntentId);
             break;
 
           case 'processing':
@@ -56,8 +57,15 @@ const PaymentStatus = () => {
       });
   }, [stripe]);
 
-
-  return message;
+  // Add a return to home button using Link component
+  return (
+    <div>
+      <p>{message}</p>
+      <Link href="https://chat.bizoe.tech/#/settings">
+        <a>设置访问密码</a>
+      </Link>
+    </div>
+  );
 };
 
 export default PaymentStatus;
