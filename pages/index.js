@@ -82,12 +82,32 @@ export default function App() {
           ))}
         </div>
       )}
+      {/* Only show the selected product info and the CheckoutForm when there is a product id in the query string */}
       {clientSecret && selectedProduct && (
-        <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm product={selectedProduct} />
-        </Elements>
+        <>
+          <div className="selected-product">
+            <h2>{selectedProduct.product.name}</h2>
+            <p>
+              {selectedProduct.product.description}{" "}
+              {selectedProduct.price / 100}{" "}
+              {selectedProduct.currency === "cny"
+                ? "人民币"
+                : selectedProduct.currency === "hkd"
+                ? "港币"
+                : selectedProduct.currency === "usd"
+                ? "美元"
+                : selectedProduct.currency === "eur"
+                ? "欧元"
+                : selectedProduct.currency}
+            </p>
+          </div>
+          <Elements options={options} stripe={stripePromise}>
+            <CheckoutForm product={selectedProduct} />
+          </Elements>
+        </>
       )}
     </div>
   );
+
 
 }
