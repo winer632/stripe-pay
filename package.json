@@ -8,6 +8,7 @@
   "dependencies": {
     "@stripe/react-stripe-js": "^1.0.0",
     "@stripe/stripe-js": "^1.0.0",
+    "axios": "^1.4.0",
     "micro": "latest",
     "micro-cors": "latest",
     "next": "^13.4.4",
