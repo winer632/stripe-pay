@@ -52,8 +52,8 @@ const webhookHandler = async (req, res) => {
         console.log(`amount: ${amount}`);
         console.log(`business_model_id: ${business_model_id}`);
 
-        // Send a POST request to http://service.bizoe.tech/recharge endpoint with the paymentIntentId
-        axios.post('http://service.bizoe.tech/v1/recharge', {
+        // Send a POST request to https://service.bizoe.tech/recharge endpoint with the paymentIntentId
+        axios.post('https://service.bizoe.tech/v1/recharge', {
           paymentIntentId: paymentIntentId,
           amount: amount,
           business_model_id: business_model_id,
