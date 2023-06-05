@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 import { buffer } from 'micro';
 import Cors from 'micro-cors';
+const axios = require('axios');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -50,6 +51,21 @@ const webhookHandler = async (req, res) => {
         business_model_id = paymentIntent.metadata.business_model_id
         console.log(`amount: ${amount}`);
         console.log(`business_model_id: ${business_model_id}`);
+
+        // Send a POST request to http://service.bizoe.tech/recharge endpoint with the paymentIntentId
+        axios.post('http://service.bizoe.tech/v1/recharge', {
+          paymentIntentId: paymentIntentId,
+          amount: amount,
+          business_model_id: business_model_id,
+        })
+        .then(response => {
+          // Handle successful response
+          console.log(`Recharge request succeeded: ${response.data}`);
+        })
+        .catch(error => {
+          // Handle error response
+          console.log(`Recharge request failed: ${error.message}`);
+        });
         break;
       }
       case 'payment_intent.payment_failed': {
