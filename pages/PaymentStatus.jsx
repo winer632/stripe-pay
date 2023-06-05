@@ -19,14 +19,18 @@ const PaymentStatus = () => {
       'payment_intent_client_secret'
     );
 
-    const paymentIntentId = new URLSearchParams(window.location.search).get(
+    const paymentIntent = new URLSearchParams(window.location.search).get(
         'payment_intent'
-      );
+    );
+
+    console.log("paymentIntent is ", paymentIntent);
+    console.log("payment_intent_client_secret is ", payment_intent_client_secret);
 
     // Retrieve the PaymentIntent
     stripe
       .retrievePaymentIntent(clientSecret)
       .then(({paymentIntent}) => {
+        console.log("paymentIntent is ", paymentIntent);
         // Inspect the PaymentIntent `status` to indicate the status of the payment
         // to your customer.
         //
@@ -39,8 +43,8 @@ const PaymentStatus = () => {
             setMessages([
               'Success! Payment received.',
               '付款成功！',
-              'Please save this access_key carefully and use it to access My ChatGPT Web, it will not be displayed again : ' + paymentIntentId,
-              '请妥善保存这个访问密码，并用它来访问My ChatGPT Web，它不会再次显示 ：' + paymentIntentId
+              'Please save this access_key carefully and use it to access My ChatGPT Web, it will not be displayed again : ' + paymentIntent,
+              '请妥善保存这个访问密码，并用它来访问My ChatGPT Web，它不会再次显示 ：' + paymentIntent
             ]);
             break;
 
@@ -67,8 +71,8 @@ const PaymentStatus = () => {
       {messages.map((message, index) => (
         <p key={index}>{message}</p>
       ))}
-      <Link href="https://chat.bizoe.tech/#/settings">
-        <a>设置访问密码</a>
+      <Link href="https://chat.bizoe.tech/#/settings" as="https://chat.bizoe.tech/#/settings">
+        设置访问密码
       </Link>
     </div>
   );
