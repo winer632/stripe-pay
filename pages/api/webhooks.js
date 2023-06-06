@@ -42,8 +42,9 @@ const webhookHandler = async (req, res) => {
 
     switch (event.type) {
       case 'payment_intent.succeeded': {
-        const paymentIntent = event.data.object;
         const paymentIntentId = event.data.object.id;
+        // Retrieve the full PaymentIntent object by its ID using Stripe API
+        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
         console.log(`PaymentIntent `, paymentIntent)
         console.log(`PaymentIntent id: ${paymentIntentId}`)
         console.log(`PaymentIntent status: ${paymentIntent.status}`);
