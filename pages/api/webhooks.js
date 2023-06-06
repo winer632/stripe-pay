@@ -52,14 +52,14 @@ const webhookHandler = async (req, res) => {
         console.log(`PaymentIntent status: ${paymentIntent.status}`);
         // Retrieve the PaymentIntent ID from the event data
         const amount = paymentIntent.amount
-        const business_model_id = paymentIntent.metadata.business_model_id
+        const product_id = paymentIntent.metadata.product_id
         console.log(`amount:`, amount);
-        console.log(`business_model_id:`, business_model_id);
+        console.log(`product_id:`, product_id);
         
         axios.post('https://service.bizoe.tech/v1/recharge', { 
             paymentIntentId: paymentIntentId, 
             amount: amount, 
-            business_model_id: business_model_id, 
+            product_id: product_id, 
         }, { 
             httpsAgent: agent // Pass the custom https agent as an option 
         })
