@@ -28,17 +28,22 @@ export default function CheckoutForm() {
     }
 
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+      console.log("CheckoutForm paymentIntent.status is ", paymentIntent.status);
       switch (paymentIntent.status) {
         case "succeeded":
+          console.log("Payment succeeded!");
           setMessage("Payment succeeded!");
           break;
         case "processing":
+          console.log("Your payment is processing.");
           setMessage("Your payment is processing.");
           break;
         case "requires_payment_method":
+          console.log("Your payment was not successful, please try again.");
           setMessage("Your payment was not successful, please try again.");
           break;
         default:
+          console.log("Something went wrong.");
           setMessage("Something went wrong.");
           break;
       }

@@ -4,6 +4,9 @@ import {loadStripe} from '@stripe/stripe-js';
 import {Elements} from '@stripe/react-stripe-js';
 import Link from 'next/link'; // Import Link component from Next.js
 
+// Load your publishable key from an environment variable or a config file
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+
 const PaymentStatus = () => {
   const stripe = useStripe();
   const [messages, setMessages] = useState([]);
@@ -24,7 +27,7 @@ const PaymentStatus = () => {
     );
 
     console.log("paymentIntent is ", paymentIntent);
-    console.log("payment_intent_client_secret is ", payment_intent_client_secret);
+    console.log("payment_intent_client_secret is ", clientSecret);
 
     // Retrieve the PaymentIntent
     stripe
@@ -40,25 +43,29 @@ const PaymentStatus = () => {
         // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
         switch (paymentIntent.status) {
           case 'succeeded':
+            console.log('PaymentStatus Payment succeeded!');
             setMessages([
               'Success! Payment received.',
               '付款成功！',
-              'Please save this access_key carefully and use it to access My ChatGPT Web, it will not be displayed again : ' + paymentIntent,
-              '请妥善保存这个访问密码，并用它来访问My ChatGPT Web，它不会再次显示 ：' + paymentIntent
+              'Please save this access_key carefully and use it to access My ChatGPT Web, it will not be displayed again : ' + paymentIntent.id,
+              '请妥善保存这个访问密码，并用它来访问My ChatGPT Web，它不会再次显示 ：' + paymentIntent.id
             ]);
             break;
 
           case 'processing':
+            console.log('PaymentStatus Payment processing.');
             setMessages(["Payment processing. We'll update you when payment is received."]);
             break;
 
           case 'requires_payment_method':
             // Redirect your user back to your payment page to attempt collecting
             // payment again
+            console.log('Payment failed. Please try another payment method.');
             setMessages(['Payment failed. Please try another payment method.']);
             break;
 
           default:
+            console.log('Something went wrong.');
             setMessages(['Something went wrong.']);
             break;
         }
@@ -78,8 +85,6 @@ const PaymentStatus = () => {
   );
 };
 
-// Load your publishable key from an environment variable or a config file
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY);
 
 const App = () => {
   return (

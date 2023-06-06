@@ -44,13 +44,14 @@ const webhookHandler = async (req, res) => {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object;
         const paymentIntentId = event.data.object.id;
+        console.log(`PaymentIntent `, paymentIntent)
         console.log(`PaymentIntent id: ${paymentIntentId}`)
         console.log(`PaymentIntent status: ${paymentIntent.status}`);
         // Retrieve the PaymentIntent ID from the event data
-        amount = paymentIntent.amount
-        business_model_id = paymentIntent.metadata.business_model_id
-        console.log(`amount: ${amount}`);
-        console.log(`business_model_id: ${business_model_id}`);
+        const amount = paymentIntent.amount
+        const business_model_id = paymentIntent.metadata.business_model_id
+        console.log(`amount:`, amount);
+        console.log(`business_model_id:`, business_model_id);
 
         // Send a POST request to https://service.bizoe.tech/recharge endpoint with the paymentIntentId
         axios.post('https://service.bizoe.tech/v1/recharge', {

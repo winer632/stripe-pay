@@ -54,7 +54,7 @@ export default function App() {
   return (
     <div className="App">
       {/* Only show the h1 element when there is no product id in the query string */}
-      {!productId && <h1>Choose a product</h1>}
+      {!productId && <h1>Choose a plan</h1>}
       {/* Only show the products list and their proceed buttons when there is no product id in the query string */}
       {!productId && (
         <div className="products">

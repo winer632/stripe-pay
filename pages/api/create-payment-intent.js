@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         amount: product.price, 
         currency: product.currency, 
         automatic_payment_methods: { enabled: true, }, 
-        metadata:{ "business_model_id": "3", }, 
+        metadata:{ business_model_id: '3', }, 
     });
 
 res.send({ clientSecret: paymentIntent.client_secret, }); };
