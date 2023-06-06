@@ -2,8 +2,7 @@ import Stripe from 'stripe';
 import { buffer } from 'micro';
 import Cors from 'micro-cors';
 const axios = require('axios');
-const https = require('https')
-;
+const https = require('https');
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
