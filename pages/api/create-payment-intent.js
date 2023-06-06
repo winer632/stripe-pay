@@ -12,5 +12,6 @@ export default async function handler(req, res) {
         automatic_payment_methods: { enabled: true, }, 
         metadata:{ business_model_id: '3', }, 
     });
-
-res.send({ clientSecret: paymentIntent.client_secret, }); };
+    console.log(`create-payment-intent paymentIntent is `, paymentIntent);
+    res.send({ clientSecret: paymentIntent.client_secret, }); 
+};
