@@ -2,7 +2,8 @@ import Stripe from 'stripe';
 import { buffer } from 'micro';
 import Cors from 'micro-cors';
 const axios = require('axios');
-
+const https = require('https')
+;
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -17,6 +18,8 @@ export const config = {
 const cors = Cors({
   allowMethods: ['POST', 'HEAD'],
 });
+
+const agent = new https.Agent({ rejectUnauthorized: false });
 
 const webhookHandler = async (req, res) => {
   if (req.method === 'POST') {
@@ -53,16 +56,16 @@ const webhookHandler = async (req, res) => {
         const business_model_id = paymentIntent.metadata.business_model_id
         console.log(`amount:`, amount);
         console.log(`business_model_id:`, business_model_id);
-
-        // Send a POST request to https://service.bizoe.tech/recharge endpoint with the paymentIntentId
-        axios.post('https://service.bizoe.tech/v1/recharge', {
-          paymentIntentId: paymentIntentId,
-          amount: amount,
-          business_model_id: business_model_id,
+        
+        axios.post('https://service.bizoe.tech/v1/recharge', { 
+            paymentIntentId: paymentIntentId, 
+            amount: amount, 
+            business_model_id: business_model_id, 
+        }, { 
+            httpsAgent: agent // Pass the custom https agent as an option 
         })
         .then(response => {
-          // Handle successful response
-          console.log(`Recharge request succeeded: ${response.data}`);
+          console.log("Recharge request succeeded: response data is ", response.data);
         })
         .catch(error => {
           // Handle error response
