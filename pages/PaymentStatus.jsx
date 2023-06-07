@@ -1,10 +1,15 @@
+// Import React hooks
 import React, { useState, useEffect } from "react";
+// Import Stripe hooks and elements
 import { useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+// Import Link component from Next.js
 import Link from "next/link";
+// Import CopyButton component
 import CopyButton from "../components/CopyButton";
 
+// Load your publishable key from an environment variable or a config file
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
@@ -114,6 +119,18 @@ const PaymentStatus = () => {
       alignItems: "center",
       justifyContent: "space-between",
     },
+    // Add some styles for the settings button
+    settingsButton: {
+      width: "130px",
+      height: "40px",
+      borderRadius: "5px",
+      border: "none",
+      backgroundColor: "#5469d4",
+      color: "#ffffff",
+      fontSize: "16px",
+      fontWeight: "bold",
+      cursor: "pointer",
+    },
   };
 
   // Add a return to home button using Link component
@@ -131,14 +148,15 @@ const PaymentStatus = () => {
           </p>
         ))}
         
-        {paymentIntent && <CopyButton text={paymentIntent.id} paymentIntent={paymentIntent} />}
-
+        {/* Add a button container */}
         <div style={styles.buttonContainer}>
-          <Link href="/" as="/" legacyBehavior>
-            <a className="btn btn-primary">Home</a>
-          </Link>
+          {/* Use the CopyButton component with the access key and pass the paymentIntent as a prop */}
+          {/* Only render the component if paymentIntent is not null */}
+          {paymentIntent && <CopyButton text={paymentIntent.id} paymentIntent={paymentIntent} />}
+          {/* Use the Link component with the settings url and pass the legacyBehavior prop */}
+          {/* Change the <a> tag to a <button> tag and apply the style */}
           <Link href="https://chat.bizoe.tech/#/settings" as="https://chat.bizoe.tech/#/settings" legacyBehavior>
-            <a className="btn btn-primary">设置访问密码</a>
+            <button style={styles.settingsButton}>设置访问密码</button>
           </Link>
         </div>
       </div>
