@@ -18,7 +18,6 @@ const cors = Cors({
   allowMethods: ['POST', 'HEAD'],
 });
 
-const agent = new https.Agent({ rejectUnauthorized: false });
 
 const webhookHandler = async (req, res) => {
   if (req.method === 'POST') {
@@ -60,8 +59,6 @@ const webhookHandler = async (req, res) => {
             paymentIntentId: paymentIntentId, 
             amount: amount, 
             product_id: product_id, 
-        }, { 
-            httpsAgent: agent // Pass the custom https agent as an option 
         })
         .then(response => {
           console.log("Recharge request succeeded: response data is ", response.data);

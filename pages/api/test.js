@@ -1,12 +1,7 @@
 import Cors from 'micro-cors';
 const axios = require('axios');
-const https = require('https');
 
-const cors = Cors({
-  allowMethods: ['POST', 'HEAD'],
-});
 
-const agent = new https.Agent({ rejectUnauthorized: false });
 
 // Define the handler function for the API route
 export default async function handler(req, res) {
@@ -21,15 +16,18 @@ export default async function handler(req, res) {
 
     // Add reservering in reserv table
     try {
-        const result = await axios.post(
-        'https://service.bizoe.tech/v1/validity',
-        {
-            access_key: 'some_valid_id',
-        },
-        {
-            httpsAgent: agent, // Pass the custom https agent as an option
-        }
-        );
+        axios.post('https://service.bizoe.tech/v1/recharge', { 
+            paymentIntentId: "pi_3NGNufCMTeU4V8Iq1NYbBkX2", 
+            amount: 400, 
+            product_id: "prod_O2DnzwF8ZK5VJ0", 
+        })
+        .then(response => {
+          console.log("Recharge request succeeded: response data is ", response.data);
+        })
+        .catch(error => {
+          // Handle error response
+          console.log(`Recharge request failed: ${error.message}`);
+        });
         console.log('Recharge request succeeded: response data is ', result.data);
         res.status(201).json(result.data);
     } catch (error) {
