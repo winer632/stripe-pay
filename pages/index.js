@@ -45,7 +45,7 @@ export default function App() {
 
   const handleSelectProduct = (product) => {
     // Redirect to a new page with the product id as a query parameter
-    router.push(`/?productId=${product.product.id}`);
+    router.replace(`/?productId=${product.product.id}`);
   };
 
   const appearance = { theme: "stripe" };
