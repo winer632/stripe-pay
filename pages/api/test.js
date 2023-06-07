@@ -37,4 +37,4 @@ export default async function handler(req, res) {
         console.log(`Recharge request failed: ${error.message}`);
         res.status(500).json(error.message);
     }
-    }
+}
