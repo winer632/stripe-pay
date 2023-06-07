@@ -7,15 +7,20 @@ const CopyButton = ({ text, paymentIntent }) => {
   const inputRef = useRef(null);
 
   // Create a function to handle the click event
-  const handleClick = () => {
+  const handleClick = async () => {
     // Check if the paymentIntent is not null
     if (paymentIntent) {
       // Select the input element
       inputRef.current.select();
-      // Copy the text to the clipboard
-      document.execCommand("copy");
-      // Show an alert message
-      alert("Copied!");
+      // Copy the text to the clipboard using Clipboard API
+      try {
+        await navigator.clipboard.writeText(text);
+        // Show an alert message
+        alert("Copied!");
+      } catch (error) {
+        // Show an error message
+        alert("Error: Failed to copy.");
+      }
     } else {
       // Show an error message
       alert("Error: No payment intent found.");
@@ -35,12 +40,17 @@ const CopyButton = ({ text, paymentIntent }) => {
       fontWeight: "bold",
       cursor: "pointer",
     },
+    // Use visibility and position to hide the input element instead of display
+    input: {
+      visibility: "hidden",
+      position: "absolute",
+    },
   };
 
   return (
     <div>
-      {/* Create a hidden input element with the text value */}
-      <input ref={inputRef} value={text} readOnly style={{ display: "none" }} />
+      {/* Create a hidden input element with the text value and apply the style */}
+      <input ref={inputRef} value={text} readOnly style={styles.input} />
       {/* Create a button element with the click handler and the style */}
       <button onClick={handleClick} style={styles.button}>
         Copy
