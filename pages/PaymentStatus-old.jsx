@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import Link from "next/link";
-import CopyButton from "../components/CopyButton";
+import Link from "next/link"; // Import Link component from Next.js
 
+// Load your publishable key from an environment variable or a config file
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
@@ -12,8 +12,6 @@ const stripePromise = loadStripe(
 const PaymentStatus = () => {
   const stripe = useStripe();
   const [messages, setMessages] = useState([]);
-  // Declare and initialize the paymentIntent variable using useState hook
-  const [paymentIntent, setPaymentIntent] = useState(null);
 
   useEffect(() => {
     if (!stripe) {
@@ -36,8 +34,6 @@ const PaymentStatus = () => {
     // Retrieve the PaymentIntent
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       console.log("paymentIntent is ", paymentIntent);
-      // Set the paymentIntent state using setPaymentIntent function
-      setPaymentIntent(paymentIntent);
       // Inspect the PaymentIntent `status` to indicate the status of the payment
       // to your customer.
       //
@@ -49,7 +45,10 @@ const PaymentStatus = () => {
         case "succeeded":
           console.log("PaymentStatus Payment succeeded!");
           setMessages([
-            "Please save this access_key carefully and use it to access My ChatGPT Web, it will not be displayed again : "+paymentIntent.id,
+            "Success! Payment received.",
+            "付款成功！",
+            "Please save this access_key carefully and use it to access My ChatGPT Web, it will not be displayed again : " +
+              paymentIntent.id,
             "请妥善保存这个访问密码，并用它来访问My ChatGPT Web，它不会再次显示 ：" + paymentIntent.id,
           ]);
           break;
@@ -76,70 +75,21 @@ const PaymentStatus = () => {
     });
   }, [stripe]);
 
-  // Add some styles for the page elements
-  const styles = {
-    container: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      height: "100vh",
-      width: "100vw",
-      backgroundColor: "#f0f2f5",
-    },
-    card: {
-      width: "80%",
-      maxWidth: "600px",
-      padding: "20px",
-      borderRadius: "10px",
-      boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-      backgroundColor: "#ffffff",
-    },
-    logo: {
-      width: "200px",
-      height: "auto",
-    },
-    title: {
-      fontSize: "24px",
-      fontWeight: "bold",
-      color: "#5469d4",
-    },
-    message: {
-      fontSize: "18px",
-      color: "#333333",
-    },
-    buttonContainer: {
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-  };
-
   // Add a return to home button using Link component
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        {/* Add a logo image */}
-        <img src="/logo.png" alt="Logo" style={styles.logo} />
-        {/* Add a title */}
-        <h1 style={styles.title}>Thank you for your purchase!</h1>
-        {/* Show any messages */}
-        {messages.map((message, index) => (
-          <p key={index} style={styles.message}>
-            {message}
-          </p>
-        ))}
-        
-        {paymentIntent && <CopyButton text={paymentIntent.id} paymentIntent={paymentIntent} />}
-
-        <div style={styles.buttonContainer}>
-          <Link href="/" as="/" legacyBehavior>
-            <a className="btn btn-primary">Home</a>
-          </Link>
-          <Link href="https://chat.bizoe.tech/#/settings" as="https://chat.bizoe.tech/#/settings" legacyBehavior>
-            <a className="btn btn-primary">设置访问密码</a>
-          </Link>
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card mt-5">
+            <div className="card-body">
+              {messages.map((message, index) => (
+                <p key={index}>{message}</p>
+              ))}
+              <Link href="https://chat.bizoe.tech/#/settings" as="https://chat.bizoe.tech/#/settings" legacyBehavior>
+                <a className="btn btn-primary">设置访问密码</a>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>
