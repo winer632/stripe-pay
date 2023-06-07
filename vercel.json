@@ -1,0 +1,9 @@
+{
+    "routes": [
+      {
+        "src": "/.well-known/apple-developer-merchantid-domain-association",
+        "dest": "/apple-developer-merchantid-domain-association",
+        "headers": { "content-type": "text/plain" }
+      }
+    ]
+}
