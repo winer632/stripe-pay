@@ -19,11 +19,10 @@ async function test() {
     .then((result) => {
         // Use json() method to parse response body as JSON
         console.log("[test] charge request result is ", result);
+        // Add a return statement here
+        return result.json();
     })
-    .then((data) => {
-        // Now data is an object with data property
-        console.log("[test] charge request succeeded: response data is ", data);
-    })
+    // Remove the second then() callback here
     .catch((error) => {
         console.error("[test] charge request failed: error is ", error);
     });
@@ -42,13 +41,13 @@ export default async function handler(req) {
     }
 
     // Add an await keyword here
-    const result = await test();
+    const data = await test();
 
-    // Check if result is defined and has a json() method here
-    if (result && typeof result.json === 'function') {
-      return result.json();
+    // Check if data is defined and has a data property here
+    if (data && data.data) {
+      return data.data;
     } else {
-      // Handle the case where result is not a valid response object
+      // Handle the case where data is not a valid object
       // For example, return an error message or a default value
       return { message: 'Something went wrong' };
     }
