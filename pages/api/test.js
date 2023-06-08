@@ -28,8 +28,8 @@ export default async function handler(req, res) {
           // Handle error response
           console.log(`Recharge request failed: ${error.message}`);
         });
-        console.log('Recharge request succeeded: response data is ', result.data);
-        res.status(201).json(result.data);
+        console.log('Recharge request succeeded: response data is ', response.data);
+        res.status(201).json(response.data);
     } catch (error) {
         // Handle error response
         console.log(`Recharge request failed: ${error.message}`);
