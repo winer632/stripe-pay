@@ -1,6 +1,3 @@
-import Cors from 'micro-cors';
-const axios = require('axios');
-
 
 async function test() {
     console.log("[test] begin ");
