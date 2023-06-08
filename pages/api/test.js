@@ -45,10 +45,12 @@ export default async function handler(req) {
 
     // Check if data is defined and has a data property here
     if (data && data.data) {
+        console.log("data.data is ", data.data);
       return data.data;
     } else {
       // Handle the case where data is not a valid object
       // For example, return an error message or a default value
+      console.log("data is ", data);
       return { message: 'Something went wrong' };
     }
 }
