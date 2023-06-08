@@ -20,41 +20,11 @@ const cors = Cors({
 
 const webhookHandler = async (req, res) => {
     if (req.method === 'POST') {
-        const buf = await buffer(req);
-        const signature = req.headers['stripe-signature'];
-
         let event;
-        try {
-            event = stripe.webhooks.constructEvent(
-                buf.toString(),
-                signature,
-                webhookSecret
-            );
-        } catch (err) {
-            // On error, log and return the error message.
-            console.log(`❌ Error message: ${err.message}`);
-            res.status(400).send(`Webhook Error: ${err.message}`);
-            return;
-        }
-
-        // Successfully constructed event.
-        console.log('✅ Success:', event.id);
+        event.type = 'payment_intent.succeeded';
 
         switch (event.type) {
             case 'payment_intent.succeeded': {
-                const paymentIntentId = event.data.object.id;
-                // Retrieve the full PaymentIntent object by its ID using Stripe API
-                const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-                console.log(`PaymentIntent `, paymentIntent)
-                console.log(`PaymentIntent id: ${paymentIntentId}`)
-                console.log(`PaymentIntent status: ${paymentIntent.status}`);
-                // Retrieve the PaymentIntent ID from the event data
-                const amount = paymentIntent.amount
-                const product_id = paymentIntent.metadata.product_id
-                console.log(`amount:`, amount);
-                console.log(`product_id:`, product_id);
-
-                // Use fetch method instead of axios
                 try {
                         // Use await keyword to wait for the fetch response
                         const response = await fetch('https://service.bizoe.tech/v1/recharge', { 
@@ -63,9 +33,9 @@ const webhookHandler = async (req, res) => {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            paymentIntentId: paymentIntentId, 
-                            amount: amount, 
-                            product_id: product_id, 
+                            paymentIntentId: "pi_3NGNufCMTeU4V8Iq1NYbBkX2", 
+                            amount: 400, 
+                            product_id: "prod_O2DnzwF8ZK5VJ0",
                         })
                         });
                         // Use await keyword to parse the response as JSON

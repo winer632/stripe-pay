@@ -8,13 +8,13 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 // Stripe requires the raw body to construct the event.
 export const config = {
-    api: {
-        bodyParser: false,
-    },
+ api: {
+ bodyParser: false,
+ },
 };
 
 const cors = Cors({
-    allowMethods: ['POST', 'HEAD'],
+ allowMethods: ['POST', 'HEAD'],
 });
 
 
@@ -55,26 +55,28 @@ const webhookHandler = async (req, res) => {
                 console.log(`product_id:`, product_id);
 
                 // Use fetch method instead of axios
-                try {
-                        // Use await keyword to wait for the fetch response
-                        const response = await fetch('https://service.bizoe.tech/v1/recharge', { 
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            paymentIntentId: paymentIntentId, 
-                            amount: amount, 
-                            product_id: product_id, 
-                        })
-                        });
-                        // Use await keyword to parse the response as JSON
-                        const data = await response.json();
-                        console.log("Recharge request succeeded: response data is ", data);
-                } catch (error) {
+                fetch('https://service.bizoe.tech/v1/recharge', { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        paymentIntentId: paymentIntentId, 
+                        amount: amount, 
+                        product_id: product_id, 
+                    })
+                })
+                .then(response => {
+                    console.log("Recharge request response status: ", response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Recharge request succeeded: response data is ", data);
+                })
+                .catch(error => {
                     // Handle error response
                     console.log(`Recharge request failed: ${error.message}`);
-                }
+                });
                 break;
             }
             case 'payment_intent.payment_failed': {
@@ -82,7 +84,7 @@ const webhookHandler = async (req, res) => {
                 console.log(
                     `❌ Payment failed: ${paymentIntent.last_payment_error?.message}`
                 );
-            break;
+                break;
             }
             case 'charge.succeeded': {
                 const charge = event.data.object;
