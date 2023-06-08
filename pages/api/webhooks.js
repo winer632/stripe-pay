@@ -13,7 +13,7 @@ export const config = {
 };
 
 
-async function test() {
+async function test(req) {
     if (req.method === 'POST') {
         const buf = await buffer(req);
         const signature = req.headers['stripe-signature'];
@@ -122,7 +122,7 @@ export default async function handler(req, res) {
     }
 
     // Add an await keyword here
-    const data = await test();
+    const data = await test(req);
 
     console.log("data is ", data);
     res.json(data);
