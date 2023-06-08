@@ -54,7 +54,6 @@ const PaymentStatus = () => {
         case "succeeded":
           console.log("PaymentStatus Payment succeeded!");
           setMessages([
-            "Please save this access_key carefully and use it to access My ChatGPT Web, it will not be displayed again : "+paymentIntent.id,
             "请妥善保存这个访问密码，并用它来访问My ChatGPT Web，它不会再次显示 ：" + paymentIntent.id,
           ]);
           break;
