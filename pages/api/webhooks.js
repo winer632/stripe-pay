@@ -1,6 +1,5 @@
 import Stripe from 'stripe';
 import { buffer } from 'micro';
-import Cors from 'micro-cors';
 const https = require('https');
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -13,12 +12,8 @@ export const config = {
     },
 };
 
-const cors = Cors({
-    allowMethods: ['POST', 'HEAD'],
-});
 
-
-const webhookHandler = async (req, res) => {
+async function test() {
     if (req.method === 'POST') {
         const buf = await buffer(req);
         const signature = req.headers['stripe-signature'];
@@ -115,4 +110,20 @@ const webhookHandler = async (req, res) => {
     }
 };
 
-export default cors(webhookHandler);
+// Define the handler function for the API route
+export default async function handler(req, res) {
+    if (req.method === 'POST') {
+        const data = req.body;
+        console.log("POST request", data);
+    }
+    if (req.method === 'GET') {
+        const data = req.query;
+        console.log("GET request", data);
+    }
+
+    // Add an await keyword here
+    const data = await test();
+
+    console.log("data is ", data);
+    res.json(data);
+}
