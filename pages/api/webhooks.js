@@ -1,6 +1,5 @@
 import Stripe from 'stripe';
 import { buffer } from 'micro';
-const https = require('https');
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -66,6 +65,7 @@ async function test(req) {
                     // Use await keyword to parse the response as JSON
                     const data = await response.json();
                     console.log("Recharge request succeeded: response data is ", data);
+                    return data;
             } catch (error) {
                 // Handle error response
                 console.log(`Recharge request failed: ${error.message}`);
@@ -109,8 +109,12 @@ export default async function handler(req, res) {
         console.log("POST request", req.body);
         // Add an await keyword here
         const data = await test(req);
-        console.log("data is ", data);
-        res.json(data);
+        if (data) {
+            console.log("data is ", data);
+            res.status(200).end(data);
+        }else{
+            res.status(422).end("unsupported event type");
+        }
     }
     else {
         res.setHeader('Allow', 'POST');
