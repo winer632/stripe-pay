@@ -53,7 +53,7 @@ export default async function handler(req, res) {
         })
         .then((result) => {
             // Use json() method to parse response body as JSON
-            return result.json();
+            console.log("[test] charge request result is ", result);
         })
         .then((data) => {
             // Now data is an object with data property
@@ -63,6 +63,7 @@ export default async function handler(req, res) {
             console.error("[test] charge request failed: error is ", error);
         });
         console.log("[test] end ");
+        return result.json();
     }
 
 }
