@@ -2,6 +2,7 @@ import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useRouter } from "next/router";
+import { Analytics } from '@vercel/analytics/react';
 
 import CheckoutForm from "../components/CheckoutForm";
 
@@ -106,6 +107,7 @@ export default function App() {
           </Elements>
         </>
       )}
+      <Analytics />
     </div>
   );
 
