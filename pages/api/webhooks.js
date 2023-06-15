@@ -105,6 +105,7 @@ async function test(req) {
 
 // Define the handler function for the API route
 export default async function handler(req, res) {
+    console.log("webhook request come in ", req)
     if (req.method === 'POST') {
         console.log("POST request", req.body);
         // Add an await keyword here
