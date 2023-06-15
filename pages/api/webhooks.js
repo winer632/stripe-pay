@@ -72,30 +72,6 @@ async function test(req) {
             }
             break;
         }
-        case 'payment_intent.payment_failed': {
-            const paymentIntent = event.data.object;
-            console.log(
-                `❌ Payment failed: ${paymentIntent.last_payment_error?.message}`
-            );
-        break;
-        }
-        case 'charge.succeeded': {
-            const charge = event.data.object;
-            console.log(`charge.succeeded， Charge id: ${charge.id}`);
-            break;
-        }
-        case 'checkout.session.completed':{
-            console.log("🔔 Payment received!");
-            break;
-        }
-        case 'checkout.session.async_payment_succeeded':{
-            console.log("🔔 Async Payment received!");
-            break;
-        }
-        case 'checkout.session.async_payment_failed':{
-            console.log("🔔 Async Payment failed!");
-            break;
-        }
         default: {
             console.warn(`Unhandled event type: ${event.type}`);
             break;
@@ -112,7 +88,7 @@ export default async function handler(req, res) {
         const data = await test(req);
         if (data) {
             console.log("data is ", data);
-            res.status(200).end(data);
+            res.status(200).json(data);
         }else{
             res.status(422).end("unsupported event type");
         }
