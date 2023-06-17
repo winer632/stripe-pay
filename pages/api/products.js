@@ -3,7 +3,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) { 
     // List products from Stripe 
-    const products = await stripe.products.list(); 
+    const products = await stripe.products.list({ active: true }); 
     // Map products to include prices 
     const productsWithPrices = await Promise.all( 
         products.data.map(
