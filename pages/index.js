@@ -55,8 +55,8 @@ export default function App() {
   return (
     <div className="App">
       {/* Only show the h1 element when there is no product id in the query string */}
-      {!productId && <h1 style={{ textAlign: "center", width: "100%" }}>选择一个套餐</h1>}
-      {!productId && <h4 style={{ textAlign: "center", width: "100%" }}>请在浏览器中打开付款页面 不要使用微信打开</h4>}
+      {!productId && <h1 style={{ textAlign: "center", width: "100%", lineHeight: "25px" }}>选择一个套餐</h1>}
+      {!productId && <h4 style={{ textAlign: "center", width: "100%", lineHeight: "25px" }}>请在浏览器中打开付款页面 不要使用微信打开</h4>}
       {/* Only show the products list and their proceed buttons when there is no product id in the query string */}
       {!productId && (
         <div className="products">
